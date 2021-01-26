@@ -50,7 +50,7 @@ namespace GameOfLife.Tests
             var game = new Library.Game(columns, rows, generations);
 
             //assert
-            Assert.Equal(50, game.Cells.Count(), "There should be 50 cells");
+            Assert.Equal(50, game.Cells.Count);
         }
 
         [Fact]
@@ -65,7 +65,7 @@ namespace GameOfLife.Tests
             var game = new Library.Game(columns, rows, generations);
 
             //assert
-            Assert.NotEqual(0, game.LiveCells.Count(), "There should be a random number of live cells.");
+            Assert.NotEmpty(game.LiveCells());
         }
     }
 }

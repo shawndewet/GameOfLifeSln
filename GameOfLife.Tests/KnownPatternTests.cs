@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace GameOfLife.Tests
@@ -31,6 +32,7 @@ namespace GameOfLife.Tests
             Assert.True(game.Cell(3, 3).Alive, "This cell should still be alive");
         }
 
+        [Fact]
         public void Beehive_should_remain_static()
         {
             //arrange
@@ -57,6 +59,7 @@ namespace GameOfLife.Tests
             Assert.True(game.Cell(4, 3).Alive, "This cell should still be alive");
         }
 
+        [Fact]
         public void Blinker_should_oscillate_over_two_periods()
         {
             //arrange
@@ -93,6 +96,7 @@ namespace GameOfLife.Tests
 
         }
 
+        [Fact]
         public void Toad_should_oscillate_over_two_periods()
         {
             //arrange
