@@ -17,5 +17,17 @@ namespace GameOfLife.Library
 
         public bool Alive { get; set; }
 
+        public override bool Equals(object obj)
+        {
+            if (!(obj is Cell otherCell))
+                return false;
+
+            return column == otherCell.column && row == otherCell.row;
+        }
+
+        public override int GetHashCode()
+        {
+            return $"Cell{column}-{row}".GetHashCode();
+        }
     }
 }

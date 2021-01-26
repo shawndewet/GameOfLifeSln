@@ -65,7 +65,7 @@ namespace GameOfLife.Tests
             var game = new Library.Game(columns, rows, generations);
 
             //assert
-            Assert.NotEmpty(game.LiveCells());
+            Assert.NotEmpty(game.LiveCells);
         }
     }
 }
