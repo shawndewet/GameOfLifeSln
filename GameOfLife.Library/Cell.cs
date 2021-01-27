@@ -15,7 +15,7 @@ namespace GameOfLife.Library
             Row = row;
         }
 
-        public bool Alive { get; set; }
+        public bool Alive { get; internal set; }
 
         public int Column { get; private set; }
         public int Row { get; private set; }
@@ -33,20 +33,21 @@ namespace GameOfLife.Library
             return $"Cell{Column}-{Row}".GetHashCode();
         }
 
-        internal Task ProcessNextGeneration(IEnumerable<Cell> neighbors)
+        internal Task<Cell> ProcessNextGeneration(IEnumerable<Cell> neighbors)
         {
+            Cell newCell = this.MemberwiseClone() as Cell;
             var livingNeighbors = neighbors.Count(r => r.Alive);
             if (Alive)
             {
                 if (livingNeighbors < 2 || livingNeighbors > 3)
-                    Alive = false;
+                    newCell.Alive = false;
             }
             else
             {
                 if (livingNeighbors == 3)
-                    Alive = true;
+                    newCell.Alive = true;
             }
-            return Task.CompletedTask;
+            return Task.FromResult(newCell);
         }
     }
 }

@@ -36,20 +36,27 @@ namespace GameOfLife.Library
         {
             for (int i = 1; i <= Generations; i++)
             {
-                var nextGenGrid = new Cell[Columns, Rows];
-                var generationTasks = new List<Task>();
+                var nextGenCells = new List<Cell>();
+                var generationTasks = new List<Task<Cell>>();
                 foreach (var cell in Cells)
                 {
                     var neighbors = GetNeighbors(cell);
                     generationTasks.Add(cell.ProcessNextGeneration(neighbors));
                 }
                 Task.WaitAll(generationTasks.ToArray());
+                foreach (var task in generationTasks)
+                    nextGenCells.Add(task.Result);
 
-                for (int c = 1; c <= Columns; c++)
-                    for (int r = 1; r <= Rows; r++)
-                        nextGenGrid[c - 1, r - 1] = Cell(c, r);
+                Cells = nextGenCells;
 
-                paintUI?.Invoke(nextGenGrid);
+                if (paintUI != null) {
+                    var nextGenGrid = new Cell[Columns, Rows];
+                    for (int c = 1; c <= Columns; c++)
+                        for (int r = 1; r <= Rows; r++)
+                            nextGenGrid[c - 1, r - 1] = Cell(c, r);
+
+                    paintUI?.Invoke(nextGenGrid);
+                }
             }
         }
 
