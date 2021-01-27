@@ -4,10 +4,11 @@ namespace GameOfLife
 {
     class Program
     {
+        static int width;
+        static int height;
+
         static void Main(string[] args)
         {
-            var width = 0;
-            var height = 0;
             var generations = 0;
             Console.WriteLine("Welcome to Shawn's Game of Life.");
             Console.WriteLine("Enter your game parameters:");
@@ -28,20 +29,22 @@ namespace GameOfLife
             Console.SetWindowSize(width, height);
             Console.SetBufferSize(width, height);
 
-            game.Start((grid)=>
-            {
-                for (int c = 1; c <= width; c++)
-                    for (int r = 1; r <= height; r++)
-                    {
-                        var x = c - 1;
-                        var y = r - 1;
-                        Console.SetCursorPosition(x, y);
-                        var cell = grid[x, y];
-                        Console.Write(cell.Alive ? "X" : ".");
-                    }
-            });
+            game.Start(PaintUI);
 
             Console.ReadLine();
+        }
+
+        static void PaintUI(Library.Cell[,] grid)
+        {
+            for (int c = 1; c <= width; c++)
+                for (int r = 1; r <= height; r++)
+                {
+                    var x = c - 1;
+                    var y = r - 1;
+                    Console.SetCursorPosition(x, y);
+                    var cell = grid[x, y];
+                    Console.Write(cell.Alive ? "X" : ".");
+                }
         }
     }
 }

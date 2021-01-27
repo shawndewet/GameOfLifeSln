@@ -34,6 +34,9 @@ namespace GameOfLife.Library
 
         public void Start(Action<Cell[,]> paintUI = null)
         {
+            if (paintUI != null)
+                InvokePaintUI(paintUI); //paint initial state
+
             for (int i = 1; i <= Generations; i++)
             {
                 var nextGenCells = new List<Cell>();
@@ -45,15 +48,19 @@ namespace GameOfLife.Library
 
                 Cells = nextGenCells;
 
-                if (paintUI != null) {
-                    var nextGenGrid = new Cell[Columns, Rows];
-                    for (int c = 1; c <= Columns; c++)
-                        for (int r = 1; r <= Rows; r++)
-                            nextGenGrid[c - 1, r - 1] = Cell(c, r);
-
-                    paintUI?.Invoke(nextGenGrid);
-                }
+                if (paintUI != null)
+                    InvokePaintUI(paintUI);
             }
+        }
+
+        private void InvokePaintUI(Action<Cell[,]> paintUI)
+        {
+            var nextGenGrid = new Cell[Columns, Rows];
+            for (int c = 1; c <= Columns; c++)
+                for (int r = 1; r <= Rows; r++)
+                    nextGenGrid[c - 1, r - 1] = Cell(c, r);
+
+            paintUI?.Invoke(nextGenGrid);
         }
 
         private IEnumerable<Cell> GetNeighbors(Cell cell)
@@ -112,8 +119,7 @@ namespace GameOfLife.Library
         private double PercentageOfCellsToMakeLive()
         {
             var percRnd = new Random();
-            int r = percRnd.Next(5, 45);
-            return percRnd.NextDouble() * r;
+            return percRnd.NextDouble();
         }
     }
 }
