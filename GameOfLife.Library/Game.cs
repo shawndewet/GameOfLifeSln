@@ -39,8 +39,10 @@ namespace GameOfLife.Library
                 var nextGenGrid = new Cell[Columns, Rows];
                 var generationTasks = new List<Task>();
                 foreach (var cell in Cells)
-                    generationTasks.Add(cell.ProcessNextGeneration(Cells));
-
+                {
+                    var neighbors = GetNeighbors(cell);
+                    generationTasks.Add(cell.ProcessNextGeneration(neighbors));
+                }
                 Task.WaitAll(generationTasks.ToArray());
 
                 for (int c = 1; c <= Columns; c++)
@@ -49,6 +51,15 @@ namespace GameOfLife.Library
 
                 paintUI?.Invoke(nextGenGrid);
             }
+        }
+
+        private IEnumerable<Cell> GetNeighbors(Cell cell)
+        {
+            return Cells
+                    .Where(r => (r.Column == cell.Column && (r.Row == cell.Row - 1 || r.Row == cell.Row + 1)) //same column, row above and below
+                                || (r.Column == cell.Column + 1 && (r.Row == cell.Row - 1 || r.Row == cell.Row || r.Row == cell.Row + 1)) //next column
+                                || (r.Column == cell.Column - 1 && (r.Row == cell.Row - 1 || r.Row == cell.Row || r.Row == cell.Row + 1)) //previous column
+                           );
         }
 
         public Cell Cell(int column, int row)
@@ -63,15 +74,13 @@ namespace GameOfLife.Library
             if (liveCells == null)
                 liveCells = RandomizeLiveCells();
 
-            grid = new Cell[Columns, Rows];
-            for (int c = 0; c < Columns; c++)
-                for (int r = 0; r < Rows; r++)
+            for (int c = 1; c <= Columns; c++)
+                for (int r = 1; r <= Rows; r++)
                 {
                     var cell = new Cell(c, r);
                     if (liveCells.Contains(cell))
                         cell.Alive = true;
 
-                    grid[c, r] = cell;
                     Cells.Add(cell);
                 }
 

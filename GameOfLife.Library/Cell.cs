@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -32,9 +33,20 @@ namespace GameOfLife.Library
             return $"Cell{Column}-{Row}".GetHashCode();
         }
 
-        internal Task ProcessNextGeneration(List<Cell> cells)
+        internal Task ProcessNextGeneration(IEnumerable<Cell> neighbors)
         {
-            throw new NotImplementedException();
+            var livingNeighbors = neighbors.Count(r => r.Alive);
+            if (Alive)
+            {
+                if (livingNeighbors < 2 || livingNeighbors > 3)
+                    Alive = false;
+            }
+            else
+            {
+                if (livingNeighbors == 3)
+                    Alive = true;
+            }
+            return Task.CompletedTask;
         }
     }
 }
