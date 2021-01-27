@@ -43,7 +43,7 @@ namespace GameOfLife
                     var y = r - 1;
                     Console.SetCursorPosition(x, y);
                     var cell = grid[x, y];
-                    Console.Write(cell.Alive ? "X" : ".");
+                    Console.Write(cell.Alive ? "X" : " ");
                 }
         }
     }
