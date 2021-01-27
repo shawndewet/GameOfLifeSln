@@ -36,6 +36,11 @@ namespace GameOfLife.Tests
         public void Beehive_should_remain_static()
         {
             //arrange
+            //......
+            //..XX..
+            //.X..X.
+            //..XX..
+            //......
             var input = new List<Library.Cell> {
                 new Library.Cell(3, 2),
                 new Library.Cell(4, 2),
@@ -51,12 +56,17 @@ namespace GameOfLife.Tests
             game.Start();
 
             //assert
+            //......
+            //..XX..
+            //.X..X.
+            //..XX..
+            //......
             Assert.True(game.Cell(3, 2).Alive, "This cell should still be alive");
             Assert.True(game.Cell(4, 2).Alive, "This cell should still be alive");
             Assert.True(game.Cell(2, 3).Alive, "This cell should still be alive");
             Assert.True(game.Cell(5, 3).Alive, "This cell should still be alive");
             Assert.True(game.Cell(3, 4).Alive, "This cell should still be alive");
-            Assert.True(game.Cell(4, 3).Alive, "This cell should still be alive");
+            Assert.True(game.Cell(4, 4).Alive, "This cell should still be alive");
         }
 
         [Fact]
