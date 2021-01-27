@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace GameOfLife.Library
 {
@@ -31,17 +32,31 @@ namespace GameOfLife.Library
         public int Rows { get; private set; }
         public int Generations { get; private set; }
 
-        public void Start()
+        public void Start(Action<Cell[,]> paintUI = null)
         {
-            throw new NotImplementedException();
+            for (int i = 1; i <= Generations; i++)
+            {
+                var nextGenGrid = new Cell[Columns, Rows];
+                var generationTasks = new List<Task>();
+                foreach (var cell in Cells)
+                    generationTasks.Add(cell.ProcessNextGeneration(Cells));
+
+                Task.WaitAll(generationTasks.ToArray());
+
+                for (int c = 1; c <= Columns; c++)
+                    for (int r = 1; r <= Rows; r++)
+                        nextGenGrid[c - 1, r - 1] = Cell(c, r);
+
+                paintUI?.Invoke(nextGenGrid);
+            }
         }
 
         public Cell Cell(int column, int row)
         {
-            throw new NotImplementedException();
+            return Cells.Single(r => r.Column == column && r.Row == row);
         }
 
-        public List<Cell> LiveCells { get { return Cells.Where(r => r.Alive).ToList(); }}
+        public List<Cell> LiveCells { get { return Cells.Where(r => r.Alive).ToList(); } }
 
         private void InitializeGrid(List<Cell> liveCells = null)
         {
