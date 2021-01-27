@@ -37,15 +37,11 @@ namespace GameOfLife.Library
             for (int i = 1; i <= Generations; i++)
             {
                 var nextGenCells = new List<Cell>();
-                var generationTasks = new List<Task<Cell>>();
                 foreach (var cell in Cells)
                 {
                     var neighbors = GetNeighbors(cell);
-                    generationTasks.Add(cell.ProcessNextGeneration(neighbors));
+                    nextGenCells.Add(cell.ProcessNextGeneration(neighbors));
                 }
-                Task.WaitAll(generationTasks.ToArray());
-                foreach (var task in generationTasks)
-                    nextGenCells.Add(task.Result);
 
                 Cells = nextGenCells;
 

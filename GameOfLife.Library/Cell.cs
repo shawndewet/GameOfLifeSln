@@ -33,7 +33,7 @@ namespace GameOfLife.Library
             return $"Cell{Column}-{Row}".GetHashCode();
         }
 
-        internal Task<Cell> ProcessNextGeneration(IEnumerable<Cell> neighbors)
+        internal Cell ProcessNextGeneration(IEnumerable<Cell> neighbors)
         {
             Cell newCell = this.MemberwiseClone() as Cell;
             var livingNeighbors = neighbors.Count(r => r.Alive);
@@ -47,7 +47,7 @@ namespace GameOfLife.Library
                 if (livingNeighbors == 3)
                     newCell.Alive = true;
             }
-            return Task.FromResult(newCell);
+            return newCell;
         }
     }
 }
