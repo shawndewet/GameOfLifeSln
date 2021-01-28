@@ -6,29 +6,44 @@ namespace GameOfLife
     {
         static int width;
         static int height;
+        static int generations;
 
         static void Main(string[] args)
         {
-            var generations = 0;
-            Console.WriteLine("Welcome to Shawn's Game of Life.");
-            Console.WriteLine("Enter your game parameters:");
-            Console.WriteLine("Width       : ");
-            Console.WriteLine("Height      : ");
-            Console.WriteLine("Generations : ");
-            Console.CursorTop = 0;
-            Console.SetCursorPosition(14, 2);
-            width = Int32.Parse(Console.ReadLine());
-            Console.SetCursorPosition(14, 3);
-            height = Int32.Parse(Console.ReadLine());
-            Console.SetCursorPosition(14, 4);
-            generations = Int32.Parse(Console.ReadLine());
+            Library.Game game = null;
+            while (true)
+            {
+                try
+                {
+                    Console.WriteLine("Welcome to Shawn's Game of Life.");
+                    Console.WriteLine("Enter your game parameters (use a width and height that will fit in your screen - typically 100 x 45):");
+                    Console.WriteLine("Width       : ");
+                    Console.WriteLine("Height      : ");
+                    Console.WriteLine("Generations : ");
+                    Console.SetCursorPosition(14, 2);
+                    width = Int32.Parse(Console.ReadLine());
+                    Console.SetCursorPosition(14, 3);
+                    height = Int32.Parse(Console.ReadLine());
+                    Console.SetCursorPosition(14, 4);
+                    generations = Int32.Parse(Console.ReadLine());
+                    
+                    Console.SetWindowSize(width, height);
+                    Console.SetBufferSize(width, height);
+                    Console.WriteLine("Initializing game board...");
+                    break; //break while loop since width and height are good.
+                }
+                catch (Exception)
+                {
+                    //the width and heigh don't fit in the screen
+                    Console.Clear();
+                    //re-run the while loop
+                }
+            }
 
-            var game = new Library.Game(width, height, generations);
-
+            Console.Clear();
             Console.CursorVisible = false;
-            Console.SetWindowSize(width, height);
-            Console.SetBufferSize(width, height);
 
+            game = new Library.Game(width, height, generations);
             game.Start(PaintUI);
 
             Console.ReadLine();
