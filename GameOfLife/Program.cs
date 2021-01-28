@@ -10,21 +10,25 @@ namespace GameOfLife
 
         static void Main(string[] args)
         {
+            Console.SetWindowSize(150, 40);
+            
             Library.Game game = null;
             while (true)
             {
                 try
                 {
+                    
                     Console.WriteLine("Welcome to Shawn's Game of Life.");
-                    Console.WriteLine("Enter your game parameters (use a width and height that will fit in your screen - typically 100 x 45):");
+                    Console.WriteLine("Enter your game parameters:");
+                    Console.WriteLine("(use a width and height that will fit in your screen - typically 100 x 45)");
                     Console.WriteLine("Width       : ");
                     Console.WriteLine("Height      : ");
                     Console.WriteLine("Generations : ");
-                    Console.SetCursorPosition(14, 2);
-                    width = Int32.Parse(Console.ReadLine());
                     Console.SetCursorPosition(14, 3);
-                    height = Int32.Parse(Console.ReadLine());
+                    width = Int32.Parse(Console.ReadLine());
                     Console.SetCursorPosition(14, 4);
+                    height = Int32.Parse(Console.ReadLine());
+                    Console.SetCursorPosition(14, 5);
                     generations = Int32.Parse(Console.ReadLine());
                     
                     Console.SetWindowSize(width, height);
