@@ -39,18 +39,26 @@ namespace GameOfLife.Library
 
             for (int i = 1; i <= Generations; i++)
             {
-                var nextGenCells = new List<Cell>();
-                foreach (var cell in Cells)
+                var nextGenCells = new Cell[Columns, Rows];
+                Parallel.ForEach(Cells, cell =>
                 {
                     var neighbors = GetNeighbors(cell);
-                    nextGenCells.Add(cell.ProcessNextGeneration(neighbors));
-                }
+                    nextGenCells[cell.Column - 1, cell.Row - 1] = cell.ProcessNextGeneration(neighbors);
+                });
 
-                Cells = nextGenCells;
+                ResetListOfCells(nextGenCells);
 
                 if (paintUI != null)
                     InvokePaintUI(paintUI);
             }
+        }
+
+        private void ResetListOfCells(Cell[,] nextGenCells)
+        {
+            Cells.Clear();
+            for (int c = 1; c <= Columns; c++)
+                for (int r = 1; r <= Rows; r++)
+                    Cells.Add(nextGenCells[c - 1, r - 1]);
         }
 
         private void InvokePaintUI(Action<Cell[,]> paintUI)
